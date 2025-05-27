@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener {
@@ -88,24 +89,27 @@ public class Login extends JFrame implements ActionListener {
 
         setVisible(true);
     }
-
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == login) {
             try{
-                String username=tfusername.getText();
-                String pass=tfpassword.getText();
+                String username = tfusername.getText();
+                String pass = tfpassword.getText();
 
-                String query = "select * from account where username='" + username + "' AND password='" + pass + "'";
-                Conn c=new Conn();
-                ResultSet rs=c.s.executeQuery(query);
+                // Use prepared statement to prevent SQL injection
+                String query = "select * from account where username = ? AND password = ?";
+                Conn c = new Conn();
+                PreparedStatement pst = c.c.prepareStatement(query);
+                pst.setString(1, username);
+                pst.setString(2, pass);
+
+                ResultSet rs = pst.executeQuery();
                 if(rs.next()){
                     setVisible(false);
                     new Loading(username);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null,"Incorrect username or password");
                 }
-
-            }catch (Exception e){
+            } catch (Exception e){
                 e.printStackTrace();
             }
         } else if (ae.getSource() == signup) {
