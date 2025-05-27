@@ -159,7 +159,7 @@ public class BookHotel extends JFrame implements ActionListener {
         bookpackage.addActionListener(this);
         add(bookpackage);
 
-        back=new JButton("Check Price");
+        back=new JButton("Back");
         back.setBackground(Color.BLACK);
         back.setForeground(Color.WHITE);
         back.setBounds(340,490,120,25);
@@ -225,6 +225,6 @@ public class BookHotel extends JFrame implements ActionListener {
         }
     }
     public static void main(String[] args) {
-        new BookHotel("Sejal");
+        new BookHotel("");
     }
 }
